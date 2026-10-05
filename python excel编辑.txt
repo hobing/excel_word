@@ -1,0 +1,64 @@
+# -*- coding: utf-8 -*-
+from openpyxl import Workbook,load_workbook
+from openpyxl.styles import *
+from PIL import ImageFont
+from PIL import Image
+from PIL import ImageDraw
+import os
+
+import warnings
+warnings.filterwarnings('ignore')
+
+wb = load_workbook('C:\\Users\\oobooH\\Desktop\\005\\开发区治安监控竣工信息表重序02.xlsx')
+
+ws = wb['Sheet1']
+uu =0
+for roo in ws.values:
+    if uu > 1:
+        atr = str(roo[2])+"."+str(roo[6]+'\\')
+
+        #ait = os.path.join('C:\\Users\\oobooH\\Desktop\\005', atr)
+        ait = 'C:\\Users\\oobooH\\Desktop\\005\\'
+        path = ait + atr
+        print(path)
+        print(ait)
+        tt = 0
+        if os.path.exists(path):
+            print(path)
+            for parent, dirnames, filenames in os.walk(path):
+                for filename in filenames:
+                    file_path = os.path.join(parent, filename)
+                    img = Image.open(file_path)
+                    print(file_path)
+                    tt = 1 + tt
+                    w = img.width  # 图片的宽
+                    print(w)
+                    h = img.height  # 图片的高
+                    print(h)
+                    f = img.format.lower()  # 图片格式
+                    print(f)
+                    font = ImageFont.truetype('C:\\Windows\\Fonts\\simhei.ttf',100)
+                    draw = ImageDraw.Draw(img)
+                    draw.text((w - 1500, h - 1000), atr, (255, 255, 255), font)
+                    draw.text((w - 1500, h - 800), "坐标："+str(roo[7])+"___"+str(roo[8]), (255, 255, 255), font)
+                    draw.text((w - 1500, h - 600), "智能箱号："+str(roo[9]), (255, 255, 255), font)
+                    draw.text((w - 1500, h - 400), "时间：2020 年 7 月 13 日", (255, 255, 255), font)
+                    img.save(file_path+str(roo[6])+str(tt)+"."+f)
+            #print (ait + atr)
+            #print (uu)
+
+    uu = uu+1
+    if uu == 5:
+        break
+    #os.path.exists('C:\\Users\\oobooH\\Desktop\\005\\'+str(roo[3])+"."+str(roo[7]))
+
+
+
+cell = ws['G7']
+print (cell.value)
+print (cell.column)
+print (cell.row)
+
+
+
+
